@@ -3,6 +3,7 @@
 "Birdview" overlook :
 
 Write the smart contract
+				- remember to use testing like truffle or hardhat
 			|	
 			|
 Create a My Profile section by using Moralis
