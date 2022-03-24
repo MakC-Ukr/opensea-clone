@@ -6,6 +6,9 @@ Write the smart contract
 				- remember to use testing like truffle or hardhat
 			|	
 			|
+Creating a basic Card for a single NFT that allows listing and buying
+			|
+			|
 Create a My Profile section by using Moralis
 			|
 			|

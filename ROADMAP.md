@@ -8,15 +8,7 @@ It will be used for testing purposes. To mint NFTs for our burner addresses.
 
 
 ######OpenSea contract
-MarketItem struct{
-	uint itemId;
-	address nftContract;
-	uint256 tokenId;
-	address payable seller; //person selling the nft
-	address payable buyer; // 0 address upon creation
-	uint256 price;
-	bool sold;
-}
+
 
 mapping(address => mapping(address => mapping(uint => mapping(uint => bool)))) private cancelledTransactions(); 
 

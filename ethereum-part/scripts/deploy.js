@@ -1,11 +1,10 @@
 async function main() {
   // We get the contract to deplo
-  const Greeter = await ethers.getContractFactory("Greeter");
-  const greeter = await Greeter.deploy("Hello, Hardhat!");
+  const MarketPlace = await ethers.getContractFactory("MarketPlace");
+  const marketPlace = await MarketPlace.deploy();
 
-  await greeter.deployed();
-
-  console.log("Greeter deployed to:", greeter.address);
+  await marketPlace.deployed();
+  console.log("MarketPlace deployed to:", marketPlace.address);
 }
 
 main()

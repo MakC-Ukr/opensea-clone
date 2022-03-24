@@ -1,7 +1,7 @@
 //SPDX-License-Identifier: Unlicense
 pragma solidity ^0.8.0;
 
-// import "hardhat/console.sol";
+import "hardhat/console.sol";
 
 abstract contract Ownable {
     address private _owner;
@@ -79,13 +79,13 @@ interface IERC721
 
 
 
-contract MarketPlace is Ownable {
-   
-    mapping(address => mapping(address => mapping(uint => mapping(uint => bool)))) private cancelledTransactions; 
+contract MarketPlace is Ownable
+{
+    mapping(address => mapping(address => mapping(uint => mapping(uint => bool)))) private cancelledTransactions;
     event NFTSold(address indexed from, address indexed to, uint256 indexed tokenId);
 
-    function _verifyMessage(bytes32 _hashedMsg, uint8 _v, bytes32 _r, bytes32 _s) public pure returns (address) 
-    {
+	function _verifyMessage(bytes32 _hashedMsg, uint8 _v, bytes32 _r, bytes32 _s) public pure returns (address)
+	{
         bytes memory prefix = "\x19Ethereum Signed Message:\n32";
         bytes32 prefixedHashMessage = keccak256(abi.encodePacked(prefix, _hashedMsg));
         address signer = ecrecover(prefixedHashMessage, _v, _r, _s);
@@ -93,20 +93,18 @@ contract MarketPlace is Ownable {
     }
 
     function cancelListing(address _contractAddress, uint _tokenId, uint _price) public
-    {   
+    {
         cancelledTransactions[msg.sender][_contractAddress][_tokenId][_price] = true;
     }
 
-    function buyToken(bytes32 _hashedMsg, uint8 _v, bytes32 _r, bytes32 _s, uint _price, address _contractAddress, uint _tokenId, address _seller) public payable
+    function buyNFT(bytes32 _hashedMsg, uint8 _v, bytes32 _r, bytes32 _s, uint _price, address _contractAddress, uint _tokenId, address _seller) public payable
     {
         require(_price == msg.value, "Msg.value must be equal to _price of NFT");
         require(_seller == IERC721(_contractAddress).ownerOf(_tokenId));
         require(keccak256(abi.encode(_seller, _contractAddress, _tokenId, _price)) == _hashedMsg, "Hashed message not same as othe parameters' hash");
         require(_seller == _verifyMessage(_hashedMsg, _v, _r, _s), "Signed wallet doesn't match the seller");
         require(cancelledTransactions[_seller][_contractAddress][_tokenId][_price] == false);
-
         IERC721(_contractAddress).transferFrom(_seller, msg.sender, _tokenId);
-
         emit NFTSold( _seller,  msg.sender,  _tokenId);
     }
 
