@@ -97,7 +97,7 @@ contract MarketPlace is Ownable
         cancelledTransactions[msg.sender][_contractAddress][_tokenId][_price] = true;
     }
 
-    function buyNFT(bytes32 _hashedMsg, uint8 _v, bytes32 _r, bytes32 _s, uint _price, address _contractAddress, uint _tokenId, address _seller) public payable
+    function buyNFT(bytes32 _hashedMsg, uint8 _v, bytes32 _r, bytes32 _s,  address _seller, address _contractAddress, uint _tokenId, uint _price  ) public payable
     {
         require(_price == msg.value, "Msg.value must be equal to _price of NFT");
         require(_seller == IERC721(_contractAddress).ownerOf(_tokenId));
