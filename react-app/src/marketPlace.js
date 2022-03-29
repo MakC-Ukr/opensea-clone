@@ -1,6 +1,6 @@
 import Web3 from 'web3'
 // import fs from 'fs'
-
+// require("../../ethereum-part/artifacts/contracts/MarketPlace.sol/MarketPlace.json")
 let web3 ;
 
 if (typeof window !== "undefined" && typeof window.ethereum !== "undefined") {
@@ -174,19 +174,6 @@ const contractABI = [
     "type": "function"
   },
   {
-    "inputs": [],
-    "name": "heyIamHere",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
     "inputs": [
       {
         "internalType": "address",
@@ -250,6 +237,5 @@ const contractABI = [
   }
 ];
 
-let instance = new web3.eth.Contract(contractABI, '0xEB85936d8b985619d90Da5DAc8C0536a49B98C11');
+let instance = new web3.eth.Contract(contractABI, '0x890Ff017a63752a41D68BB81019761facaa06664');
 export default instance;
-

@@ -2,7 +2,10 @@ import React from "react";
 import { TabList, Tab, Icon } from "web3uikit";
 import MyProfileHeader from '../components/MyProfileHeader'
 import MyProfilePortfolio from '../components/MyProfilePortfolio'
-require('dotenv').config();
+require('dotenv').config()
+
+
+
 
 
 class MyProfile extends React.Component {
@@ -33,3 +36,6 @@ class MyProfile extends React.Component {
 }
 
 export default MyProfile;
+
+
+// Usage: <MyProfile connectedAccount = {this.state.connectedAccount}/>

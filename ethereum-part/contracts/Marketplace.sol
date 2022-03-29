@@ -97,14 +97,15 @@ contract MarketPlace is Ownable
         cancelledTransactions[msg.sender][_contractAddress][_tokenId][_price] = true;
     }
 
-    function buyNFT(bytes32 _hashedMsg, uint8 _v, bytes32 _r, bytes32 _s,  address _seller, address _contractAddress, uint _tokenId, uint _price  ) public payable
+    function buyNFT(bytes32 _hashedMsg, uint8 _v, bytes32 _r, bytes32 _s, uint _price, address _contractAddress, uint _tokenId, address _seller) public payable
     {
         require(_price == msg.value, "Msg.value must be equal to _price of NFT");
-        require(_seller == IERC721(_contractAddress).ownerOf(_tokenId));
+        require(_seller == IERC721(_contractAddress).ownerOf(_tokenId) , "seller is not the same");
         require(keccak256(abi.encode(_seller, _contractAddress, _tokenId, _price)) == _hashedMsg, "Hashed message not same as othe parameters' hash");
         require(_seller == _verifyMessage(_hashedMsg, _v, _r, _s), "Signed wallet doesn't match the seller");
         require(cancelledTransactions[_seller][_contractAddress][_tokenId][_price] == false);
         IERC721(_contractAddress).transferFrom(_seller, msg.sender, _tokenId);
+        payable(address(_seller)).transfer(msg.value);
         emit NFTSold( _seller,  msg.sender,  _tokenId);
     }
 
@@ -113,3 +114,5 @@ contract MarketPlace is Ownable
         return IERC721(_contractAddress).getApproved(_tokenId) == address(this) || IERC721(_contractAddress).isApprovedForAll(_seller, address(this)) ;
     }
 }
+
+// "0xaeb885eae7ecc425b6a49bad5ef205e236b8ab5b400e2a7554cbf7610f22d943", "28", "0x4ec437d6ed046b242067d2c9ed22767999a842bb288f0b3c9cff270c893d46c3", "0x0b867556e7a36ebb1b887a6beedd467388f237c4a856665d701ae4e2883de665", "1000000000000000000", "0xf5de760f2e916647fd766b4ad9e85ff943ce3a2b", "415918", "0x1Abf3a6C41035C1d2A3c74ec22405B54450f5e13"

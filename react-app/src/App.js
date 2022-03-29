@@ -4,9 +4,13 @@ import React from "react";
 // import TokenInstance from "./classes/TokenInstance";
 import MyProfile from "./pages/MyProfile";
 import Header from './components/Header'
+import OpenListings from './pages/OpenListings'
 import { Button } from "web3uikit";
-// import marketPlace from "./marketPlace";
 // import Web3 from "web3";
+
+
+// Initialize Firebase
+
 
 // let web3 = new Web3();
 
@@ -53,6 +57,7 @@ const connectWalletHandler = async (self) => {
     console.log(err);
   }
 };
+
 class App extends React.Component {
   constructor(props) {
     super(props);
@@ -99,8 +104,11 @@ class App extends React.Component {
             : ''
           }
           <MyProfile connectedAccount = {this.state.connectedAccount}/>
+          {/* <OpenListings connectedAccount = {this.state.connectedAccount}/> */}
         </Header>
       </div>
+
+      
     );
   }
 

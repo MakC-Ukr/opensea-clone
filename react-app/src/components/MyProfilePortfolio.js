@@ -1,23 +1,27 @@
 import React from "react";
 import NftSaleCard from "./NftSaleCard";
-import { Illustration } from "web3uikit";
 import { Moralis } from "moralis";
 import TokenInstance from "../classes/TokenInstance";
 import Web3 from 'web3';
-require("dotenv").config();
+import MyPlaceHolder from '../components/MyPlaceHolder'
+import firebase from "../initFirebase";
+import 'firebase/compat/database';
+import MarketListing from '../classes/MarketListing'
 
-function getCardsAsList(moralisData) {
+const db = firebase.database();
+
+function getCardsAsList(moralisData, connectedAccount) {
   const result= [];
   let i_key= 0;
   moralisData.forEach(function (e) {
-    let thisInstance = new TokenInstance(e["token_address"], e["token_id"], e["name"], e["symbol"],"https://ipfs.io/ipfs/bafybeifvwitulq6elvka2hoqhwixfhgb42l4aiukmtrw335osetikviuuu");
-    // console.log({ thisInstance });
+    let imgAddr = JSON.parse(e.metadata)['image'];
+    let thisInstance = new TokenInstance(e["token_address"], e["token_id"], e["name"], e["symbol"],imgAddr);
     result.push (<NftSaleCard
         key={i_key++}
         tokenInstance = {thisInstance}
         onClick={() => {
           let priceToSell = '1';
-          onSellToken(e["owner_of"], e["token_address"], e["token_id"], web3.utils.toWei(priceToSell,'ether') );
+          onSellToken(e["owner_of"], e["token_address"], e["token_id"], connectedAccount, String(web3.utils.toWei(priceToSell,'ether')),e["symbol"],e["name"], imgAddr);
         }}
         tokenOwner="0x1Abf3a6C41035C1d2A3c74ec22405B54450f5e13"
         salePrice=''/>);
@@ -26,7 +30,7 @@ function getCardsAsList(moralisData) {
 }
 
 let web3 = new Web3();
-const onSellToken = async (_seller, _contractAddress, _tokenId, _priceInWei) => {
+const onSellToken = async (_seller, _contractAddress, _tokenId, _connAcc, _priceInWei, _contractSymbol, _contractName, _imageAddress) => {
   const message = web3.eth.abi.encodeParameters(
     ["address", "address", "uint256", "uint256"],
     [_seller, _contractAddress, _tokenId, _priceInWei]
@@ -42,8 +46,24 @@ const onSellToken = async (_seller, _contractAddress, _tokenId, _priceInWei) => 
   const r = signature.slice(0, 66);
   const s = "0x" + signature.slice(66, 130);
   const v = parseInt(signature.slice(130, 132), 16);
-  console.log({ hashedMessage,v, r, s });
-  console.log("sold");
+  // console.log({ hashedMessage,v, r, s });
+
+  const dbRef = db.ref("signs");
+  let newDbRef= dbRef.push();
+  newDbRef.set({
+    listingId: "1",
+    contractAddress : _contractAddress,
+    tokenId : _tokenId,
+    connAcc : _connAcc,
+    priceInEth: "1",
+    contractSymbol : _contractSymbol,
+    contractName : _contractName,
+    // imageAddress : _imageAddress,
+    hashedMessage,  
+    v, 
+    r, 
+    s
+  });
 };
 
 // Props required: connectedAccount
@@ -68,10 +88,8 @@ class MyProfilePortfolio extends React.Component {
       await delay(0.2); // needed delay
       await Moralis.start({ serverUrl, appId, masterKey });
       let options1 = { chain: "rinkeby", address: self.props.connectedAccount };
-      console.log(options1);
       const rinkebyNfts = await Moralis.Web3API.account.getNFTs(options1);
       self.setState({ myPortfolio: rinkebyNfts["result"] });
-      console.log(rinkebyNfts["result"]);
     }
     fetchData(this);
   }
@@ -82,21 +100,11 @@ class MyProfilePortfolio extends React.Component {
         {this.state.myPortfolio.length > 0 ? (
           <div>
             <div style={{display: "flex", flexDirection: "row", flexWrap:"wrap" , rowGap:"20px", columnGap:"30px", width: "88%", margin: "auto"}}>
-              {getCardsAsList(this.state.myPortfolio)}
+              {getCardsAsList(this.state.myPortfolio, this.props.connectedAccount)}
             </div>
           </div>
         ) : (
-          <div>
-            <h2 style={{ fontFamily: "Poppins" }}>No items to display</h2>
-            <div
-              style={{
-                borderTopLeftRadius: "15px",
-                backgroundColor: "#1E90FF",
-              }}
-            >
-              <Illustration logo="pack" />
-            </div>
-          </div>
+          <MyPlaceHolder/>
         )}
       </div>
     );
