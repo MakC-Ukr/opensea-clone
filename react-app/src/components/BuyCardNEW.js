@@ -6,7 +6,7 @@ class BuyCardNEW extends React.Component {
   render() {
     return (
       <div style={{ width: "275px" }}>
-        <Card onClick={() => {}} setIsSelected={() => {}}>
+        <Card onClick={() => { }} setIsSelected={() => { }}>
           <div>
             <div style={{ alignItems: "center", display: "flex", gap: "5px" }}>
               <Avatar
@@ -17,12 +17,12 @@ class BuyCardNEW extends React.Component {
               />
             </div>
             <p></p>
-            <div style={{ color: "black", fontSize: "18px"  , display: "flex", flexDirection: "row", justifyContent:"space-between" }}>
+            <div style={{ color: "black", fontSize: "18px", display: "flex", flexDirection: "row", justifyContent: "space-between" }}>
               {this.props.marketListing.contractSymbol}
-              <div>
-                <img src = {logo} alt= "Eth" style={ {height: "18px"} }></img>
-                {this.props.marketListing.price}
-                </div>
+              <div style={{ flexDirection: "row" }}>
+                {this.props.marketListing.priceInEther}
+                <img src={logo} alt="Eth" style={{ height: "18px" }}></img>
+              </div>
             </div>
             <div style={{ color: "#68738D", fontSize: "12px" }}>
               {this.props.marketListing.contractName} #
@@ -33,7 +33,11 @@ class BuyCardNEW extends React.Component {
               text="Buy"
               theme="primary"
               onClick={() => {
-                this.props.onClick();
+                try {
+                  this.props.onClick();
+                } catch (err) {
+                  console.log(err);
+                }
               }}
             />
           </div>

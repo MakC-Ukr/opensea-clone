@@ -1,11 +1,27 @@
 import React from "react";
 import { Card, Avatar, Button } from "web3uikit";
 
+
+function handleChange(event,self) {
+  self.setState({ value: event.target.value });
+}
+
+
+
 class NftSaleCard extends React.Component {
+  constructor() {
+    super();
+    this.state = {
+      value: ''
+    }
+  }
+
+
+
   render() {
     return (
       <div style={{ width: "275px" }}>
-        <Card onClick={() => {}} setIsSelected={() => {}}>
+        <Card onClick={() => { }} setIsSelected={() => { }}>
           <div>
             <div style={{ alignItems: "center", display: "flex", gap: "5px" }}>
               <Avatar
@@ -22,9 +38,12 @@ class NftSaleCard extends React.Component {
             >
               {this.props.tokenInstance.contractSymbol}
             </div>
-            <div style={{ color: "#68738D", fontSize: "12px" }}>
-              {this.props.tokenInstance.contractName} #
-              {this.props.tokenInstance.tokenId}
+            <div style={{ color: "#68738D", fontSize: "12px", display: 'flex', flexDirection: 'row', alignContent: 'space-evenly' }}>
+                {this.props.tokenInstance.contractName} #
+                {this.props.tokenInstance.tokenId}
+              <div style={{ width: "60px" }}>
+                <input value={this.state.value} onChange={(event) => {handleChange(event, this)}} style={{ width: "40px", height: "8px" } }/>
+              </div>
             </div>
             <Button
               isFullWidth
@@ -32,10 +51,7 @@ class NftSaleCard extends React.Component {
               theme="primary"
               onClick={() => {
                 this.props.onClick(
-                  this.props.tokenOwner,
-                  this.props.tokenInstance.contractAddress,
-                  this.props.tokenInstance.tokenId,
-                  this.props.salePrice
+                  this.state.value
                 );
               }}
             />
@@ -48,7 +64,6 @@ class NftSaleCard extends React.Component {
 
 export default NftSaleCard;
 
-// https://ipfs.io/ipfs/bafybeifvwitulq6elvka2hoqhwixfhgb42l4aiukmtrw335osetikviuuu
 
 
 /* Example of using:  <NftSaleCard

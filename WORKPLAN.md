@@ -18,15 +18,13 @@ Create a Data Base of all transactions that are being sold in our market place
 			|
 			|
 Take the data from the database and show just all the NFT's on sale
-				- add the necessity to approve the NFT before selling it 
+				- add the necessity to approve the NFT before selling it
+				- load images to show in My Profile page correctly
+				- enable cancelling market listings
+				- show only available listings  
 			|
 			|
-Connect these pages
-
-
-
-
-
-
-Things to implement: 
-1. Implement Moralis all the keys through .env
+Allow different prices except than 1 eth for buying/selling
+			|
+			|
+Connect all pages with useRouter

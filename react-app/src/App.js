@@ -6,40 +6,7 @@ import MyProfile from "./pages/MyProfile";
 import Header from './components/Header'
 import OpenListings from './pages/OpenListings'
 import { Button } from "web3uikit";
-// import Web3 from "web3";
 
-
-// Initialize Firebase
-
-
-// let web3 = new Web3();
-
-/*const onSellToken = async (_seller, _contractAddress, _tokenId, _price) => {
-  const message = web3.eth.abi.encodeParameters(
-    ["address", "address", "uint256", "uint256"],
-    [_seller, _contractAddress, _tokenId, _price]
-  );
-  const hashedMessage = web3.utils.sha3(message);
-  let accs = await window.ethereum.request({
-    method: "eth_accounts",
-  });
-  const signature = await window.ethereum.request({
-    method: "personal_sign",
-    params: [hashedMessage, accs[0]],
-  });
-  const r = signature.slice(0, 66);
-  const s = "0x" + signature.slice(66, 130);
-  const v = parseInt(signature.slice(130, 132), 16);
-  console.log({ hashedMessage,v, r, s });
-  console.log("sold");
-};
-*/
-
-
-/*const onBuyToken = async(hashedMsg, v,r,s ,_seller, _contractAddress, _tokenId, _price, _value) => {
-  await marketPlace.methods.buyItem(hashedMsg, v,r,s ,_seller, _contractAddress, _tokenId, _price).
-  send({value: _value, from : accounts[0], gas : "3000000"})
-}*/
 
 const connectWalletHandler = async (self) => {
   const { ethereum } = window;
@@ -58,18 +25,24 @@ const connectWalletHandler = async (self) => {
   }
 };
 
+function showProfilePage(self, boolean) {
+  self.setState({
+    onProfilePage:boolean,
+  });
+}
+
 class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      connectedAccount: 'a'
+      connectedAccount: 'a',
+      onProfilePage : false
     };
   }
 
-  componentDidMount () {
+  componentDidMount() {
     const self = this;
-    async function fetchData ()
-    {
+    async function fetchData() {
       const { ethereum } = window;
       if (!ethereum) {
         alert("Please install Metamask!");
@@ -84,31 +57,58 @@ class App extends React.Component {
 
     fetchData().then(
       () => {
-        console.log("Fetched Data: ", this.state);
+        // console.log("Fetched Data: ", this.state);
       }
     );
   }
 
+  
+
   render() {
-  return (
+    return (
       <div>
-        <Header>
-          {this.state.connectedAccount === 'a' ?
-          <Button
-            text={
-                "Connect wallet first and reload the page"
+        <Header connectedAccount={this.state.connectedAccount}  
+          showProfilePage = {() => {
+              showProfilePage(this, true);
             }
-            onClick={() => {connectWalletHandler(this)}}
-            theme="primary"
-            />
-            : ''
+          } 
+          showListings = {() => {
+              showProfilePage(this, false);
+              console.log("HIII");
+            }
           }
-          <MyProfile connectedAccount = {this.state.connectedAccount}/>
-          {/* <OpenListings connectedAccount = {this.state.connectedAccount}/> */}
+        >
+          {this.state.connectedAccount === 'a' ?
+            <Button
+              text={
+                "Connect wallet first and reload the page"
+              }
+              onClick={() => { 
+                  try{
+                    connectWalletHandler(this)
+                  }  catch (err) 
+                  {
+                    console.log(err);
+                  }
+                }
+              }
+              theme="primary"
+            />
+            :
+            ''
+          }
         </Header>
+        {
+          this.state.onProfilePage === true ?
+            <MyProfile connectedAccount={this.state.connectedAccount} />
+            : <OpenListings connectedAccount={this.state.connectedAccount} />
+        }
+
+
+
       </div>
 
-      
+
     );
   }
 
