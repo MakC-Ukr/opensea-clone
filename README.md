@@ -2,9 +2,9 @@
 Clone of OpenSea. With a much worse UI, xD.
 
 Working prototype on any of the following links:
-- opensea-clone-lovat.vercel.app
-- opensea-clone-git-main-makc-ukr.vercel.app
-- opensea-clone-makc-ukr.vercel.app
+- [opensea-clone-lovat.vercel.app](url)
+- [opensea-clone-git-main-makc-ukr.vercel.app](url)
+- [opensea-clone-makc-ukr.vercel.app](url)
 
 ### Contract address:
 0x890Ff017a63752a41D68BB81019761facaa06664
