@@ -1,5 +1,5 @@
 # opensea-clone
-Clone of OpenSea. With a much worse UI, xD.
+Clone of OpenSea, the largest NFT marketplace today. Tech stack used: Solidity, React, JS. 
 
 Working prototype on any of the following links:
 - [https://www.opensea.io](https://opensea-clone-lovat.vercel.app)
