@@ -2,9 +2,9 @@
 Clone of OpenSea, the largest NFT marketplace today. Tech stack used: Solidity, React, JS. 
 
 Working prototype on any of the following links:
-- [https://www.opensea.io](https://opensea-clone-lovat.vercel.app)
-- [https://www.opensea-MakC.io](https://opensea-clone-git-main-makc-ukr.vercel.app)
-- [https://www.opensea-clone.io](https://opensea-clone-makc-ukr.vercel.app)
+- [https://opensea-clone-lovat.vercel.app](https://opensea-clone-lovat.vercel.app)
+- [https://opensea-clone-git-main-makc-ukr.vercel.app](https://opensea-clone-git-main-makc-ukr.vercel.app)
+- [https://opensea-clone-makc-ukr.vercel.app](https://opensea-clone-makc-ukr.vercel.app)
 
 ### Contract address:
 0x890Ff017a63752a41D68BB81019761facaa06664
